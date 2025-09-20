@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, Toplevel
+import re
 import sys
 import os
 
@@ -100,7 +101,14 @@ class App(tk.Tk):
             messagebox.showerror("Erro de validação", "Nome e CPF são campos obrigatórios")
             return
 
-        novo_cliente = Cliente(nome, telefone, email, cpf)
+        #Valida CPF
+        cpf_limpo = re.sub(r'\D', '', cpf)
+
+        if len(cpf_limpo) != 11:
+            messagebox.showerror("Erro de validação:", "CPF Inválido. Deve conter exatamente 11 digitos numéricos")
+            return
+
+        novo_cliente = Cliente(nome, telefone, email, cpf_limpo)
 
         if create_cliente(novo_cliente):
             messagebox.showinfo("Sucesso", "Cliente cadastrado com sucesso!")
@@ -217,12 +225,12 @@ class App(tk.Tk):
 
         tabela.bind('<Double-1>', on_edit)
 
-        # Adicionamos um frame separado para os botões de ação
         botoes_frame = ttk.Frame(janela_visualizacao)
         botoes_frame.pack(pady=10)
 
         btn_excluir = ttk.Button(botoes_frame, text="Excluir Cliente", command=on_delete)
         btn_excluir.pack(side=tk.LEFT, padx=5)
+
 
 
 def run_app():
