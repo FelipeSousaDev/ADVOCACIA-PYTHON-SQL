@@ -108,6 +108,11 @@ class App(tk.Tk):
             messagebox.showerror("Erro de validação:", "CPF Inválido. Deve conter exatamente 11 digitos numéricos")
             return
 
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,3}$'
+        if not(re.match(email_regex, email)):
+            messagebox.showerror("Erro de validação", "Formato de email invalido")
+            return
+
         novo_cliente = Cliente(nome, telefone, email, cpf_limpo)
 
         if create_cliente(novo_cliente):
